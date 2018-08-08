@@ -15,21 +15,16 @@ app.use(express.static(publicPath));
 io.on('connection', (socket) => {
     console.log('New client connected.');
 
-    // socket.emit('newEmail', {
-    //     from: 'ann@example.com',
-    //     text: 'ichor'
-    // });
-
     socket.emit('newMessage', {
         text: 'symbolic difference'
     });
 
-    // socket.on('createEmail', (newEmail) => {
-    //     console.log(newEmail);
-    // });
-
     socket.on('createMessage', (msg) => {
         console.log('Message received:', msg);
+        io.emit('newMessage', {
+            from: msg.from,
+            text: msg.text
+        });
     });
 
     socket.on('disconnect', () => {
